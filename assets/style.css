@@ -5,8 +5,38 @@ font-family: 'Bungee Shade', cursive;
 
 body {
     font-family: 'Roboto', sans-serif;
+    background-image: url('./images/diagmonds.png');
+    background-color: #cecece;
 }
 
 h1 {
     font-family: 'Bungee Shade', cursive;
- }
+}
+
+.jumbotron {
+    background-image: url('./images/brushed-alum-dark.png');
+    background-color: lightgray;
+    border: solid 1px black;
+    margin-top: 15px;
+}
+
+.card {
+    background-color: rgba(245,245,245,0.8);
+    border: solid 1px black;
+}
+
+.card-header {
+    padding: 18px;
+}
+
+.table td, .table th {
+    border-top: 1px solid black;
+}
+
+.form-control {
+    border: solid 1px black;
+}
+
+.btn {
+    width: 20%;
+}

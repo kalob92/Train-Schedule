@@ -20,6 +20,13 @@ var fTConverted;
 var nextArrival;
 var minutesAway;
 
+function currentTime() {
+    var now = moment().format('h:mm a');
+    $('#now').text(now);
+};
+
+setInterval(currentTime, 1000);
+
 $("#add-train-btn").on('click', function(event) {
     event.preventDefault();
 
@@ -60,19 +67,14 @@ trainbase.ref().on("child_added", function(childSnapshot) {
     fTConverted = moment(firstTime, 'HH:mm').subtract(1, 'years');
     console.log(`train name: ${trainName}, destination: ${destination}, first train time: ${fTConverted}, frequency: ${frequency}`);
 
-    var now = moment();
-    console.log(`current time is ${moment(now).format('HH:mm')}`);
-
     var diff = moment().diff(moment(fTConverted), 'minutes');
-    console.log(`time difference: ${diff}`);
-
     // the remainder left after dividing the difference in time between now and the first train by the frequency of the train
     var timeRemainder = diff%frequency;
     // then subtract that from how often it comes to see how much time is left
     minutesAway = frequency-timeRemainder;
     console.log(`${minutesAway} minutes until the next train arrives.`);
 
-    nextArrival = moment().add(minutesAway, 'minutes');
+    nextArrival = moment().add(minutesAway, 'minutes').format('hh:mm a');
     console.log(`Next Arrival at: ${nextArrival}`);
 
 
