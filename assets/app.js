@@ -1,4 +1,4 @@
-var config = {
+var firebaseConfig = {
     apiKey: "AIzaSyAw4x04RIVCMFIC2PeFvfwP9ZnaqlOg-xg",
     authDomain: "trainscheduler-4044e.firebaseapp.com",
     databaseURL: "https://trainscheduler-4044e.firebaseio.com",
@@ -8,15 +8,15 @@ var config = {
     appId: "1:830650044584:web:5f72a6bcea64c8c5"
 };
 
-firebase.initializeApp(config);
+firebase.initializeApp(firebaseConfig);
 
-var database = firebase.database();
+var trainbase = firebase.database();
 
 var trainName;
 var destination;
 var firstTime;
 var frequency;
-
+var fTConverted;
 var nextArrival;
 var minutesAway;
 
@@ -26,7 +26,8 @@ $("#add-train-btn").on('click', function(event) {
     // user input
     trainName = $('#train-name').val().trim();
     destination = $('#destination').val().trim();
-    firstTime = moment($('#first-time').val().trim(), "HH:mm");
+    // wait to convert firstTime because Firebase doesn't like it
+    firstTime = $('#first-time').val().trim();
     frequency = $('#frequency').val().trim();
 
     console.log(`train name ${trainName}`);
@@ -42,9 +43,39 @@ $("#add-train-btn").on('click', function(event) {
         frequency: frequency
     };
 
-    database.push(newTrain);
+    firebase.database().ref().push(newTrain);
 
     $('#train-name, #destination, #first-time, #frequency').val('');
 
-    return
+    return;
+});
+
+trainbase.ref().on("child_added", function(childSnapshot) {
+    console.log(childSnapshot.val());
+
+    trainName = childSnapshot.val().train;
+    destination = childSnapshot.val().endpoint;
+    firstTime = childSnapshot.val().initialTime;
+    frequency = childSnapshot.val().frequency;
+    fTConverted = moment(firstTime, 'HH:mm').subtract(1, 'years');
+    console.log(`train name: ${trainName}, destination: ${destination}, first train time: ${fTConverted}, frequency: ${frequency}`);
+
+    var now = moment();
+    console.log(`current time is ${moment(now).format('HH:mm')}`);
+
+    var diff = moment().diff(moment(fTConverted), 'minutes');
+    console.log(`time difference: ${diff}`);
+
+    // the remainder left after dividing the difference in time between now and the first train by the frequency of the train
+    var timeRemainder = diff%frequency;
+    // then subtract that from how often it comes to see how much time is left
+    minutesAway = frequency-timeRemainder;
+    console.log(`${minutesAway} minutes until the next train arrives.`);
+
+    nextArrival = moment().add(minutesAway, 'minutes');
+    console.log(`Next Arrival at: ${nextArrival}`);
+
+
+    // fill out the table
+    $('#train-table').append(`<tr><td>${trainName}</td><td>${destination}</td><td>${frequency}</td><td>${nextArrival}</td><td>${minutesAway}</td>`);
 });
