@@ -12,4 +12,5 @@ Input train name, destination, first departure time (in military time), and freq
 ____
 
 GitHub Repo: https://github.com/kalob92/Train-Schedule
+
 Deployed on GitHub Pages: https://kalob92.github.io/Train-Schedule/
