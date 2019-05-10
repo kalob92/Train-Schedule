@@ -1,4 +1,4 @@
-var firebaseConfig = {
+var config = {
     apiKey: "AIzaSyAw4x04RIVCMFIC2PeFvfwP9ZnaqlOg-xg",
     authDomain: "trainscheduler-4044e.firebaseapp.com",
     databaseURL: "https://trainscheduler-4044e.firebaseio.com",
@@ -8,19 +8,26 @@ var firebaseConfig = {
     appId: "1:830650044584:web:5f72a6bcea64c8c5"
 };
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(config);
 
-var database = firebase.database().ref();
+var database = firebase.database();
+
+var trainName;
+var destination;
+var firstTime;
+var frequency;
+
+var nextArrival;
+var minutesAway;
 
 $("#add-train-btn").on('click', function(event) {
     event.preventDefault();
 
     // user input
-    var trainName = $('#train-name').val().trim();
-    var destination = $('#destination').val().trim();
-    var firstTime = moment($('#first-time').val().trim(), "HH:mm");
-    var frequency = $('#frequency').val().trim();
+    trainName = $('#train-name').val().trim();
+    destination = $('#destination').val().trim();
+    firstTime = moment($('#first-time').val().trim(), "HH:mm");
+    frequency = $('#frequency').val().trim();
 
     console.log(`train name ${trainName}`);
     console.log(`destination is ${destination}`);
@@ -32,9 +39,12 @@ $("#add-train-btn").on('click', function(event) {
         train: trainName,
         endpoint: destination,
         initialTime: firstTime,
-        freq: frequency
+        frequency: frequency
     };
 
+    database.push(newTrain);
 
+    $('#train-name, #destination, #first-time, #frequency').val('');
 
+    return
 });
