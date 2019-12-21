@@ -1,0 +1,25 @@
+{
+  "name": "train-schedule",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "cypress": "^3.4.1",
+    "eslint": "^5.16.0",
+    "lodash": "^4.17.14"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kalob92/Train-Schedule.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kalob92/Train-Schedule/issues"
+  },
+  "homepage": "https://github.com/kalob92/Train-Schedule#readme"
+}
